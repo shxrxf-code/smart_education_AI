@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Home - SmartEdu AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-light mb-3">Student Performance Prediction System</h1>
+            <p class="lead text-muted mb-4">AI-powered educational analytics with smart attendance and performance insights</p>
+            {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Get Started</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="fas fa-camera text-primary"></i>
+                    </div>
+                </div>
+                <h5 class="card-title">Smart Attendance</h5>
+                <p class="card-text text-muted">Automated attendance tracking using face recognition technology</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="fas fa-chart-line text-success"></i>
+                    </div>
+                </div>
+                <h5 class="card-title">Performance Analytics</h5>
+                <p class="card-text text-muted">Machine learning predictions for academic performance and risk assessment</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                    </div>
+                </div>
+                <h5 class="card-title">Early Intervention</h5>
+                <p class="card-text text-muted">Real-time alerts and personalized recommendations for at-risk students</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title text-center mb-4">Supporting Quality Education</h4>
+                <div class="row text-center">
+                    <div class="col-md-3 col-6 mb-3">
+                        <h3 class="text-primary">15%</h3>
+                        <p class="text-muted mb-0">Improved Retention</p>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <h3 class="text-success">25%</h3>
+                        <p class="text-muted mb-0">Better Performance</p>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <h3 class="text-info">40%</h3>
+                        <p class="text-muted mb-0">Early Detection</p>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <h3 class="text-warning">60%</h3>
+                        <p class="text-muted mb-0">Time Saved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+
+{% block title %}Teacher Dashboard - SmartEdu AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="fas fa-chalkboard-teacher me-2"></i>Teacher Dashboard</h2>
+        <p class="text-muted">Monitor your class performance and manage student data.</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">32</h4>
+                        <small>Total Students</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">78%</h4>
+                        <small>Avg Attendance</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-user-check fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">5</h4>
+                        <small>At-Risk Students</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">3.1</h4>
+                        <small>Class GPA</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Class Performance Overview</h5>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm btn-outline-primary active">Week</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary">Month</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary">Semester</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="classPerformanceChart" height="100"></canvas>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-user-graduate me-2"></i>Student List</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Attendance</th>
+                                <th>GPA</th>
+                                <th>Risk Level</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>STU001</td>
+                                <td>John Smith</td>
+                                <td><span class="badge bg-success">92%</span></td>
+                                <td>3.8</td>
+                                <td><span class="badge bg-success">Low</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewStudentDetails('STU001')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>STU002</td>
+                                <td>Jane Johnson</td>
+                                <td><span class="badge bg-warning">78%</span></td>
+                                <td>2.9</td>
+                                <td><span class="badge bg-warning">Medium</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewStudentDetails('STU002')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>STU003</td>
+                                <td>Mike Wilson</td>
+                                <td><span class="badge bg-danger">45%</span></td>
+                                <td>2.1</td>
+                                <td><span class="badge bg-danger">High</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="interveneStudent('STU003')">
+                                        <i class="fas fa-hands-helping"></i> Intervene
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>STU004</td>
+                                <td>Sarah Davis</td>
+                                <td><span class="badge bg-success">88%</span></td>
+                                <td>3.5</td>
+                                <td><span class="badge bg-success">Low</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewStudentDetails('STU004')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Students Requiring Attention</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <h6><i class="fas fa-user me-2"></i>Mike Wilson (STU003)</h6>
+                    <p class="mb-2"><strong>Risk Factors:</strong></p>
+                    <ul class="mb-2">
+                        <li>Low attendance (45%)</li>
+                        <li>Poor academic performance (GPA: 2.1)</li>
+                        <li>Declining trend in Mathematics</li>
+                    </ul>
+                    <button class="btn btn-sm btn-danger" onclick="interveneStudent('STU003')">
+                        <i class="fas fa-hands-helping me-1"></i>Start Intervention
+                    </button>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-user me-2"></i>Jane Johnson (STU002)</h6>
+                    <p class="mb-2"><strong>Concerns:</strong></p>
+                    <ul class="mb-2">
+                        <li>Moderate attendance (78%)</li>
+                        <li>Struggling in Physics</li>
+                        <li>Recent performance drop</li>
+                    </ul>
+                    <button class="btn btn-sm btn-warning" onclick="viewStudentDetails('STU002')">
+                        <i class="fas fa-eye me-1"></i>View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('attendance') }}" class="btn btn-primary">
+                        <i class="fas fa-camera me-2"></i>Mark Attendance
+                    </a>
+                    <button class="btn btn-success" onclick="generateReport()">
+                        <i class="fas fa-file-alt me-2"></i>Generate Class Report
+                    </button>
+                    <button class="btn btn-info" onclick="scheduleMeeting()">
+                        <i class="fas fa-calendar me-2"></i>Schedule Parent Meeting
+                    </button>
+                    <button class="btn btn-warning" onclick="exportData()">
+                        <i class="fas fa-download me-2"></i>Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Grade Distribution</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="gradeDistributionChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Student Details Modal -->
+<div class="modal fade" id="studentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Student Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="studentDetails">
+                    <!-- Student details will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="interveneStudent()">Start Intervention</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Class Performance Chart
+const classPerformanceCtx = document.getElementById('classPerformanceChart').getContext('2d');
+const classPerformanceChart = new Chart(classPerformanceCtx, {
+    type: 'line',
+    data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+        datasets: [{
+            label: 'Class Average GPA',
+            data: [2.9, 3.0, 2.95, 3.05, 3.1, 3.1],
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.1
+        }, {
+            label: 'Attendance Rate',
+            data: [75, 78, 76, 80, 79, 78],
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            tension: 0.1,
+            yAxisID: 'y1'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+        scales: {
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                min: 2.0,
+                max: 4.0
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                min: 0,
+                max: 100,
+                grid: {
+                    drawOnChartArea: false,
+                },
+            }
+        }
+    }
+});
+
+// Grade Distribution Chart
+const gradeDistributionCtx = document.getElementById('gradeDistributionChart').getContext('2d');
+const gradeDistributionChart = new Chart(gradeDistributionCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['A (90-100)', 'B (80-89)', 'C (70-79)', 'D (60-69)', 'F (Below 60)'],
+        datasets: [{
+            data: [8, 12, 7, 3, 2],
+            backgroundColor: [
+                'rgba(40, 167, 69, 0.8)',
+                'rgba(23, 162, 184, 0.8)',
+                'rgba(255, 193, 7, 0.8)',
+                'rgba(255, 152, 0, 0.8)',
+                'rgba(220, 53, 69, 0.8)'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Functions
+function viewStudentDetails(studentId) {
+    // This would fetch student details from API
+    document.getElementById('studentDetails').innerHTML = `
+        <h6>Student ID: ${studentId}</h6>
+        <p><strong>Name:</strong> John Smith</p>
+        <p><strong>Current GPA:</strong> 3.8</p>
+        <p><strong>Attendance Rate:</strong> 92%</p>
+        <p><strong>Risk Level:</strong> Low</p>
+        <h6 class="mt-3">Recent Performance</h6>
+        <canvas id="studentPerformanceChart" height="100"></canvas>
+    `;
+    
+    const modal = new bootstrap.Modal(document.getElementById('studentModal'));
+    modal.show();
+}
+
+function interveneStudent(studentId) {
+    if (confirm('Are you sure you want to start an intervention plan for this student?')) {
+        // This would trigger the intervention process
+        alert('Intervention plan initiated for student ' + studentId);
+    }
+}
+
+function generateReport() {
+    alert('Generating class performance report...');
+}
+
+function scheduleMeeting() {
+    alert('Opening parent meeting scheduler...');
+}
+
+function exportData() {
+    alert('Exporting class data to Excel...');
+}
+
+// Load teacher data
+function loadTeacherData() {
+    // This would fetch data from the API
+    console.log('Loading teacher dashboard data...');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    loadTeacherData();
+});
+</script>
+{% endblock %}

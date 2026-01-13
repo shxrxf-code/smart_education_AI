@@ -1,0 +1,44 @@
+nohup: ignoring input
+/home/null/SmartEdu_AI/app_simple.py:51: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  enrollment_date = db.Column(db.Date, default=datetime.utcnow().date())
+ * Serving Flask app 'app_simple'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.53.191.67:5000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+/home/null/SmartEdu_AI/app_simple.py:51: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  enrollment_date = db.Column(db.Date, default=datetime.utcnow().date())
+ * Debugger is active!
+ * Debugger PIN: 101-622-226
+ * Detected change in '/home/null/SmartEdu_AI/app.py', reloading
+ * Restarting with stat
+/home/null/SmartEdu_AI/app_simple.py:51: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  enrollment_date = db.Column(db.Date, default=datetime.utcnow().date())
+ * Debugger is active!
+ * Debugger PIN: 101-622-226
+ * Detected change in '/home/null/SmartEdu_AI/app.py', reloading
+ * Restarting with stat
+/home/null/SmartEdu_AI/app_simple.py:51: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  enrollment_date = db.Column(db.Date, default=datetime.utcnow().date())
+ * Debugger is active!
+ * Debugger PIN: 101-622-226
+127.0.0.1 - - [13/Jan/2026 15:51:50] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2026 15:51:51] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2026 15:51:51] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2026 15:51:51] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+127.0.0.1 - - [13/Jan/2026 15:51:51] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+ * Detected change in '/home/null/SmartEdu_AI/app_simple.py', reloading
+ * Restarting with stat
+/home/null/SmartEdu_AI/app_simple.py:51: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  enrollment_date = db.Column(db.Date, default=datetime.utcnow().date())
+ * Debugger is active!
+ * Debugger PIN: 101-622-226
+ * Detected change in '/home/null/SmartEdu_AI/app_simple.py', reloading
+ * Restarting with stat
+/home/null/SmartEdu_AI/app_simple.py:51: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  enrollment_date = db.Column(db.Date, default=datetime.utcnow().date())
+ * Debugger is active!
+ * Debugger PIN: 101-622-226

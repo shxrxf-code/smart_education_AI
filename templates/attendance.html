@@ -1,0 +1,400 @@
+{% extends "base.html" %}
+
+{% block title %}Smart Attendance - SmartEdu AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="fas fa-camera me-2"></i>Smart Attendance System</h2>
+        <p class="text-muted">Use face recognition to automatically mark student attendance.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-video me-2"></i>Camera Feed</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="camera-container">
+                            <video id="videoElement" width="100%" height="400" autoplay></video>
+                            <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="attendance-controls">
+                            <div class="mb-3">
+                                <label for="subjectSelect" class="form-label">Select Subject</label>
+                                <select class="form-select" id="subjectSelect">
+                                    <option value="">Choose...</option>
+                                    {% for subject in subjects %}
+                                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button id="startCamera" class="btn btn-primary">
+                                    <i class="fas fa-play me-2"></i>Start Camera
+                                </button>
+                                <button id="captureAttendance" class="btn btn-success" disabled>
+                                    <i class="fas fa-camera me-2"></i>Capture Attendance
+                                </button>
+                                <button id="stopCamera" class="btn btn-danger" disabled>
+                                    <i class="fas fa-stop me-2"></i>Stop Camera
+                                </button>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <div class="progress">
+                                    <div id="recognitionProgress" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <small class="text-muted">Face recognition in progress...</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-users me-2"></i>Recognized Students</h5>
+            </div>
+            <div class="card-body">
+                <div id="recognizedStudents" class="row">
+                    <!-- Recognized students will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Settings</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="confidenceThreshold" class="form-label">Confidence Threshold</label>
+                    <input type="range" class="form-range" id="confidenceThreshold" min="0.5" max="1.0" step="0.05" value="0.6">
+                    <small class="text-muted">Current: <span id="thresholdValue">0.6</span></small>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="recognitionDelay" class="form-label">Recognition Delay (seconds)</label>
+                    <input type="number" class="form-control" id="recognitionDelay" value="3" min="1" max="10">
+                </div>
+                
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="autoCapture" checked>
+                    <label class="form-check-label" for="autoCapture">
+                        Auto-capture after recognition
+                    </label>
+                </div>
+                
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="soundAlerts" checked>
+                    <label class="form-check-label" for="soundAlerts">
+                        Enable sound alerts
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Today's Attendance</h5>
+            </div>
+            <div class="card-body">
+                <div id="todayAttendance">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Total Students:</span>
+                        <strong id="totalStudents">0</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Present:</span>
+                        <strong class="text-success" id="presentCount">0</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Absent:</span>
+                        <strong class="text-danger" id="absentCount">0</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Attendance Rate:</span>
+                        <strong id="attendanceRate">0%</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Instructions</h5>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li>Select the subject for attendance</li>
+                    <li>Click "Start Camera" to begin face recognition</li>
+                    <li>Ensure students are clearly visible in the camera</li>
+                    <li>Click "Capture Attendance" to record attendance</li>
+                    <li>Review recognized students and confirm</li>
+                </ol>
+                
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <strong>Tip:</strong> For best results, ensure good lighting and minimal background noise.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Attendance Confirmation Modal -->
+<div class="modal fade" id="attendanceModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Attendance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Recognized Students (<span id="recognizedCount">0</span>)</h6>
+                <div id="confirmedStudents" class="row mb-3">
+                    <!-- Confirmed students will appear here -->
+                </div>
+                
+                <h6>Manual Entry</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control mb-2" id="manualStudentId" placeholder="Student ID">
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-outline-primary" onclick="addManualStudent()">
+                            <i class="fas fa-plus me-1"></i>Add Student
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitAttendance()">
+                    <i class="fas fa-check me-1"></i>Submit Attendance
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let video = document.getElementById('videoElement');
+let canvas = document.getElementById('canvas');
+let stream = null;
+let recognizedStudentsList = [];
+
+// Camera controls
+document.getElementById('startCamera').addEventListener('click', async function() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        
+        document.getElementById('startCamera').disabled = true;
+        document.getElementById('captureAttendance').disabled = false;
+        document.getElementById('stopCamera').disabled = false;
+        
+        // Start face recognition simulation
+        startFaceRecognition();
+    } catch (err) {
+        console.error('Error accessing camera:', err);
+        alert('Unable to access camera. Please check permissions.');
+    }
+});
+
+document.getElementById('stopCamera').addEventListener('click', function() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+        
+        document.getElementById('startCamera').disabled = false;
+        document.getElementById('captureAttendance').disabled = true;
+        document.getElementById('stopCamera').disabled = true;
+    }
+});
+
+document.getElementById('captureAttendance').addEventListener('click', function() {
+    captureAttendance();
+});
+
+// Settings
+document.getElementById('confidenceThreshold').addEventListener('input', function() {
+    document.getElementById('thresholdValue').textContent = this.value;
+});
+
+// Face recognition simulation
+function startFaceRecognition() {
+    let progress = 0;
+    const progressBar = document.getElementById('recognitionProgress');
+    
+    const interval = setInterval(() => {
+        progress += Math.random() * 20;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            
+            // Simulate recognized students
+            simulateRecognition();
+        }
+        progressBar.style.width = progress + '%';
+    }, 500);
+}
+
+function simulateRecognition() {
+    // Simulate recognizing some students
+    const mockStudents = [
+        { id: 'STU001', name: 'John Smith', confidence: 0.95 },
+        { id: 'STU002', name: 'Jane Johnson', confidence: 0.87 },
+        { id: 'STU004', name: 'Sarah Davis', confidence: 0.92 }
+    ];
+    
+    recognizedStudentsList = mockStudents;
+    displayRecognizedStudents();
+    
+    // Play sound if enabled
+    if (document.getElementById('soundAlerts').checked) {
+        playNotificationSound();
+    }
+}
+
+function displayRecognizedStudents() {
+    const container = document.getElementById('recognizedStudents');
+    container.innerHTML = '';
+    
+    recognizedStudentsList.forEach(student => {
+        const studentCard = document.createElement('div');
+        studentCard.className = 'col-md-4 mb-3';
+        studentCard.innerHTML = `
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <div class="avatar-placeholder mb-2">
+                        <i class="fas fa-user fa-3x text-success"></i>
+                    </div>
+                    <h6>${student.name}</h6>
+                    <p class="mb-0"><small>ID: ${student.id}</small></p>
+                    <p class="mb-0"><small>Confidence: ${(student.confidence * 100).toFixed(1)}%</small></p>
+                    <span class="badge bg-success">Recognized</span>
+                </div>
+            </div>
+        `;
+        container.appendChild(studentCard);
+    });
+    
+    updateAttendanceStats();
+}
+
+function captureAttendance() {
+    if (recognizedStudentsList.length === 0) {
+        alert('No students recognized. Please try again.');
+        return;
+    }
+    
+    // Show confirmation modal
+    const modal = new bootstrap.Modal(document.getElementById('attendanceModal'));
+    document.getElementById('recognizedCount').textContent = recognizedStudentsList.length;
+    
+    // Display confirmed students
+    const container = document.getElementById('confirmedStudents');
+    container.innerHTML = '';
+    
+    recognizedStudentsList.forEach(student => {
+        const studentDiv = document.createElement('div');
+        studentDiv.className = 'col-md-6 mb-2';
+        studentDiv.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center p-2 border rounded">
+                <span>${student.name} (${student.id})</span>
+                <span class="badge bg-success">Present</span>
+            </div>
+        `;
+        container.appendChild(studentDiv);
+    });
+    
+    modal.show();
+}
+
+function submitAttendance() {
+    const subjectId = document.getElementById('subjectSelect').value;
+    if (!subjectId) {
+        alert('Please select a subject first.');
+        return;
+    }
+    
+    // This would send data to the backend
+    const attendanceData = {
+        subject_id: subjectId,
+        students: recognizedStudentsList,
+        date: new Date().toISOString()
+    };
+    
+    // Simulate API call
+    console.log('Submitting attendance:', attendanceData);
+    
+    // Show success message
+    alert(`Attendance submitted successfully for ${recognizedStudentsList.length} students!`);
+    
+    // Reset
+    recognizedStudentsList = [];
+    document.getElementById('recognizedStudents').innerHTML = '';
+    bootstrap.Modal.getInstance(document.getElementById('attendanceModal')).hide();
+}
+
+function updateAttendanceStats() {
+    const total = 32; // Total students in class
+    const present = recognizedStudentsList.length;
+    const absent = total - present;
+    const rate = ((present / total) * 100).toFixed(1);
+    
+    document.getElementById('totalStudents').textContent = total;
+    document.getElementById('presentCount').textContent = present;
+    document.getElementById('absentCount').textContent = absent;
+    document.getElementById('attendanceRate').textContent = rate + '%';
+}
+
+function playNotificationSound() {
+    // Create a simple beep sound
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+}
+
+function addManualStudent() {
+    const studentId = document.getElementById('manualStudentId').value;
+    if (studentId) {
+        // Add to recognized list
+        recognizedStudentsList.push({
+            id: studentId,
+            name: 'Manual Entry',
+            confidence: 1.0
+        });
+        displayRecognizedStudents();
+        document.getElementById('manualStudentId').value = '';
+    }
+}
+</script>
+{% endblock %}

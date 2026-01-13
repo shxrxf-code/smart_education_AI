@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - SmartEdu AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>System Settings</h5>
+            </div>
+            <div class="card-body">
+                <form id="settingsForm">
+                    <!-- General Settings -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">General Settings</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Institution Name</label>
+                                <input type="text" class="form-control" id="institutionName" value="Smart University">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Academic Year</label>
+                                <input type="text" class="form-control" id="academicYear" value="2024-2025">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Time Zone</label>
+                                <select class="form-select" id="timeZone">
+                                    <option value="UTC+05:30">UTC+05:30 (IST)</option>
+                                    <option value="UTC+00:00">UTC+00:00 (GMT)</option>
+                                    <option value="UTC-05:00">UTC-05:00 (EST)</option>
+                                    <option value="UTC-08:00">UTC-08:00 (PST)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Default Language</label>
+                                <select class="form-select" id="language">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ML Model Settings -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">ML Model Configuration</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Model Retraining Frequency</label>
+                                <select class="form-select" id="retrainingFrequency">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly" selected>Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prediction Confidence Threshold</label>
+                                <input type="range" class="form-range" id="confidenceThreshold" min="0.5" max="1.0" step="0.05" value="0.8">
+                                <small class="text-muted d-block">Current: <span id="confidenceValue">0.8</span></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Face Recognition Confidence</label>
+                                <input type="range" class="form-range" id="faceThreshold" min="0.5" max="1.0" step="0.05" value="0.6">
+                                <small class="text-muted d-block">Current: <span id="faceValue">0.6</span></small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Risk Alert Threshold</label>
+                                <input type="range" class="form-range" id="riskThreshold" min="0.1" max="1.0" step="0.1" value="0.7">
+                                <small class="text-muted d-block">Current: <span id="riskValue">0.7</span></small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Backup Settings -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">Backup & Recovery</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Backup Frequency</label>
+                                <select class="form-select" id="backupFrequency">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly" selected>Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Retention Period (days)</label>
+                                <input type="number" class="form-control" id="retentionPeriod" value="30" min="7" max="365">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <button type="button" class="btn btn-outline-primary" onclick="initiateBackup()">
+                                    <i class="fas fa-download me-2"></i>Initiate Backup Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Settings -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">Security Settings</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Session Timeout (minutes)</label>
+                                <input type="number" class="form-control" id="sessionTimeout" value="30" min="5" max="120">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Password Policy</label>
+                                <select class="form-select" id="passwordPolicy">
+                                    <option value="strong">Strong (8+ chars, special chars)</option>
+                                    <option value="medium" selected>Medium (6+ chars)</option>
+                                    <option value="weak">Weak (4+ chars)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Two-Factor Authentication</label>
+                                <select class="form-select" id="twoFactorAuth">
+                                    <option value="disabled" selected>Disabled</option>
+                                    <option value="email">Email</option>
+                                    <option value="sms">SMS</option>
+                                    <option value="app">Authenticator App</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Login Attempts Limit</label>
+                                <input type="number" class="form-control" id="loginAttempts" value="5" min="3" max="10">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Maintenance Mode -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">Maintenance Mode</h6>
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="maintenanceMode">
+                                    <label class="form-check-label" for="maintenanceMode">
+                                        Enable Maintenance Mode
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button type="button" class="btn btn-outline-warning" id="maintenanceStatus">
+                                    <i class="fas fa-power-off me-2"></i>Disabled
+                                </button>
+                            </div>
+                        </div>
+                        {% if maintenanceMode %}
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Maintenance Message</label>
+                                <textarea class="form-control" id="maintenanceMessage" rows="3" placeholder="System is currently under maintenance. Please try again later.">System is currently under maintenance. Please try again later.</textarea>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-primary" onclick="saveSettings()">
+                                <i class="fas fa-save me-2"></i>Save All Settings
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="resetSettings()">
+                                <i class="fas fa-undo me-2"></i>Reset to Defaults
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Range input value display
+document.getElementById('confidenceThreshold').addEventListener('input', function() {
+    document.getElementById('confidenceValue').textContent = this.value;
+});
+
+document.getElementById('faceThreshold').addEventListener('input', function() {
+    document.getElementById('faceValue').textContent = this.value;
+});
+
+document.getElementById('riskThreshold').addEventListener('input', function() {
+    document.getElementById('riskValue').textContent = this.value;
+});
+
+// Maintenance mode toggle
+document.getElementById('maintenanceMode').addEventListener('change', function() {
+    const statusBtn = document.getElementById('maintenanceStatus');
+    const messageDiv = document.getElementById('maintenanceMessage');
+    
+    if (this.checked) {
+        statusBtn.innerHTML = '<i class="fas fa-power-off me-2"></i>Enabled';
+        statusBtn.className = 'btn btn-danger';
+        messageDiv.style.display = 'block';
+    } else {
+        statusBtn.innerHTML = '<i class="fas fa-power-off me-2"></i>Disabled';
+        statusBtn.className = 'btn btn-outline-warning';
+        messageDiv.style.display = 'none';
+    }
+});
+
+function saveSettings() {
+    const form = document.getElementById('settingsForm');
+    const formData = new FormData();
+    
+    // Collect all settings
+    const settings = {
+        institutionName: document.getElementById('institutionName').value,
+        academicYear: document.getElementById('academicYear').value,
+        timeZone: document.getElementById('timeZone').value,
+        language: document.getElementById('language').value,
+        retrainingFrequency: document.getElementById('retrainingFrequency').value,
+        confidenceThreshold: document.getElementById('confidenceThreshold').value,
+        faceThreshold: document.getElementById('faceThreshold').value,
+        riskThreshold: document.getElementById('riskThreshold').value,
+        backupFrequency: document.getElementById('backupFrequency').value,
+        retentionPeriod: document.getElementById('retentionPeriod').value,
+        passwordPolicy: document.getElementById('passwordPolicy').value,
+        twoFactorAuth: document.getElementById('twoFactorAuth').value,
+        loginAttempts: document.getElementById('loginAttempts').value,
+        maintenanceMode: document.getElementById('maintenanceMode').checked,
+        maintenanceMessage: document.getElementById('maintenanceMessage').value
+    };
+    
+    // Add to FormData
+    Object.keys(settings).forEach(key => {
+        formData.append(key, settings[key]);
+    });
+    
+    // Show loading state
+    const submitBtn = form.querySelector('button[type="button"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+    }
+    
+    // Send update request
+    fetch('/api/update_settings', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(response => {
+        if (response.success) {
+            showNotification('success', response.message || 'Settings saved successfully');
+        } else {
+            showNotification('error', response.message || 'Save failed');
+        }
+    })
+    .catch(error => {
+        console.error('Settings save error:', error);
+        showNotification('error', 'Network error. Please try again.');
+    })
+    .finally(() => {
+        // Reset button state
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save me-2"></i>Save All Settings';
+        }
+    });
+}
+
+function resetSettings() {
+    if (confirm('Are you sure you want to reset all settings to default values?')) {
+        // Reset form values
+        document.getElementById('institutionName').value = 'Smart University';
+        document.getElementById('academicYear').value = '2024-2025';
+        document.getElementById('timeZone').value = 'UTC+05:30';
+        document.getElementById('language').value = 'en';
+        document.getElementById('retrainingFrequency').value = 'weekly';
+        document.getElementById('confidenceThreshold').value = '0.8';
+        document.getElementById('faceThreshold').value = '0.6';
+        document.getElementById('riskThreshold').value = '0.7';
+        document.getElementById('backupFrequency').value = 'weekly';
+        document.getElementById('retentionPeriod').value = '30';
+        document.getElementById('passwordPolicy').value = 'medium';
+        document.getElementById('twoFactorAuth').value = 'disabled';
+        document.getElementById('loginAttempts').value = '5';
+        document.getElementById('maintenanceMode').checked = false;
+        document.getElementById('maintenanceMessage').value = 'System is currently under maintenance. Please try again later.';
+        
+        // Update display values
+        document.getElementById('confidenceValue').textContent = '0.8';
+        document.getElementById('faceValue').textContent = '0.6';
+        document.getElementById('riskValue').textContent = '0.7';
+        
+        // Update maintenance mode display
+        const statusBtn = document.getElementById('maintenanceStatus');
+        statusBtn.innerHTML = '<i class="fas fa-power-off me-2"></i>Disabled';
+        statusBtn.className = 'btn btn-outline-warning';
+        document.getElementById('maintenanceMessage').style.display = 'none';
+        
+        showNotification('info', 'Settings reset to default values');
+    }
+}
+
+function initiateBackup() {
+    showNotification('info', 'Backup process initiated. You will receive an email when completed.');
+    
+    // Simulate backup process
+    fetch('/api/initiate_backup', {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(response => {
+        if (response.success) {
+            showNotification('success', response.message || 'Backup completed successfully');
+        } else {
+            showNotification('error', response.message || 'Backup failed');
+        }
+    })
+    .catch(error => {
+        console.error('Backup error:', error);
+        showNotification('error', 'Network error during backup.');
+    });
+}
+</script>
+{% endblock %}

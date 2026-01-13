@@ -1,0 +1,592 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - SmartEdu AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="fas fa-cogs me-2"></i>Administrator Dashboard</h2>
+        <p class="text-muted">System management and institutional oversight.</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-lg-3 col-md-6">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">1,247</h4>
+                        <small>Total Users</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">94.2%</h4>
+                        <small>System Uptime</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-server fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">87.3%</h4>
+                        <small>Prediction Accuracy</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-brain fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">156</h4>
+                        <small>Alerts Today</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-bell fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>System Overview</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="systemOverviewChart" height="100"></canvas>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-user-cog me-2"></i>User Management</h5>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="userTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button">
+                            Students (986)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#teachers" type="button">
+                            Teachers (234)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="admins-tab" data-bs-toggle="tab" data-bs-target="#admins" type="button">
+                            Admins (27)
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="userTabsContent">
+                    <div class="tab-pane fade show active" id="students" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>STU001</td>
+                                        <td>John Smith</td>
+                                        <td>john.smith@university.edu</td>
+                                        <td>Computer Science</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                            <button class="btn btn-sm btn-outline-danger">Disable</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>STU002</td>
+                                        <td>Jane Johnson</td>
+                                        <td>jane.johnson@university.edu</td>
+                                        <td>Engineering</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                            <button class="btn btn-sm btn-outline-danger">Disable</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="teachers" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>Subjects</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>TCH001</td>
+                                        <td>Dr. Robert Brown</td>
+                                        <td>robert.brown@university.edu</td>
+                                        <td>Computer Science</td>
+                                        <td>5</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                            <button class="btn btn-sm btn-outline-info">Assign</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="admins" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Last Login</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ADM001</td>
+                                        <td>System Administrator</td>
+                                        <td>admin@university.edu</td>
+                                        <td>Super Admin</td>
+                                        <td>2 hours ago</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                            <button class="btn btn-sm btn-outline-warning">Reset</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-database me-2"></i>Database Statistics</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <h4 class="text-primary">45,678</h4>
+                        <p class="mb-0">Attendance Records</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="text-success">12,345</h4>
+                        <p class="mb-0">Academic Records</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="text-info">3,456</h4>
+                        <p class="mb-0">Predictions</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="text-warning">2.3 GB</h4>
+                        <p class="mb-0">Storage Used</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bell me-2"></i>System Alerts</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>High Risk Students</h6>
+                    <p class="mb-2">12 students showing critical dropout risk factors</p>
+                    <button class="btn btn-sm btn-danger">View Details</button>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-database me-2"></i>Database Performance</h6>
+                    <p class="mb-2">Query response time increased by 15%</p>
+                    <button class="btn btn-sm btn-warning">Investigate</button>
+                </div>
+                
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-sync me-2"></i>Model Retraining</h6>
+                    <p class="mb-2">ML models due for weekly retraining</p>
+                    <button class="btn btn-sm btn-info">Schedule</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>System Settings</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary" onclick="openSettings('general')">
+                        <i class="fas fa-sliders-h me-2"></i>General Settings
+                    </button>
+                    <button class="btn btn-outline-success" onclick="openSettings('ml')">
+                        <i class="fas fa-brain me-2"></i>ML Model Configuration
+                    </button>
+                    <button class="btn btn-outline-warning" onclick="openSettings('backup')">
+                        <i class="fas fa-save me-2"></i>Backup & Recovery
+                    </button>
+                    <button class="btn btn-outline-info" onclick="openSettings('security')">
+                        <i class="fas fa-shield-alt me-2"></i>Security Settings
+                    </button>
+                    <button class="btn btn-outline-danger" onclick="openSettings('maintenance')">
+                        <i class="fas fa-tools me-2"></i>Maintenance Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>User Distribution</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="userDistributionChart" height="200"></canvas>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <span>New user registration</span>
+                            <small class="text-muted">5 mins ago</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Attendance data synced</span>
+                            <small class="text-muted">1 hour ago</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <span>ML models retrained</span>
+                            <small class="text-muted">3 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <span>System backup completed</span>
+                            <small class="text-muted">6 hours ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">System Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="settingsContent">
+                    <!-- Settings content will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// System Overview Chart
+const systemOverviewCtx = document.getElementById('systemOverviewChart').getContext('2d');
+const systemOverviewChart = new Chart(systemOverviewCtx, {
+    type: 'line',
+    data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+            label: 'Active Users',
+            data: [820, 932, 901, 934, 1290, 1330, 1020],
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.1
+        }, {
+            label: 'Predictions Made',
+            data: [120, 145, 130, 155, 180, 195, 160],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            tension: 0.1
+        }, {
+            label: 'Attendance Records',
+            data: [450, 520, 480, 510, 650, 680, 550],
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// User Distribution Chart
+const userDistributionCtx = document.getElementById('userDistributionChart').getContext('2d');
+const userDistributionChart = new Chart(userDistributionCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Students', 'Teachers', 'Administrators'],
+        datasets: [{
+            data: [986, 234, 27],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(255, 206, 86, 0.8)'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Functions
+function openSettings(type) {
+    const modal = new bootstrap.Modal(document.getElementById('settingsModal'));
+    const content = document.getElementById('settingsContent');
+    
+    switch(type) {
+        case 'general':
+            content.innerHTML = `
+                <h6>General Settings</h6>
+                <div class="mb-3">
+                    <label class="form-label">Institution Name</label>
+                    <input type="text" class="form-control" value="Smart University">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Academic Year</label>
+                    <input type="text" class="form-control" value="2024-2025">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Time Zone</label>
+                    <select class="form-select">
+                        <option>UTC+05:30 (IST)</option>
+                        <option>UTC+00:00 (GMT)</option>
+                        <option>UTC-05:00 (EST)</option>
+                    </select>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="maintenanceMode" checked>
+                    <label class="form-check-label" for="maintenanceMode">
+                        Enable Maintenance Mode
+                    </label>
+                </div>
+            `;
+            break;
+        case 'ml':
+            content.innerHTML = `
+                <h6>Machine Learning Configuration</h6>
+                <div class="mb-3">
+                    <label class="form-label">Model Retraining Frequency</label>
+                    <select class="form-select">
+                        <option>Daily</option>
+                        <option selected>Weekly</option>
+                        <option>Monthly</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Prediction Confidence Threshold</label>
+                    <input type="range" class="form-range" min="0.5" max="1.0" step="0.05" value="0.8">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Face Recognition Confidence</label>
+                    <input type="range" class="form-range" min="0.5" max="1.0" step="0.05" value="0.6">
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="autoRetraining" checked>
+                    <label class="form-check-label" for="autoRetraining">
+                        Enable Automatic Model Retraining
+                    </label>
+                </div>
+            `;
+            break;
+        case 'backup':
+            content.innerHTML = `
+                <h6>Backup & Recovery Settings</h6>
+                <div class="mb-3">
+                    <label class="form-label">Backup Frequency</label>
+                    <select class="form-select">
+                        <option>Daily</option>
+                        <option selected>Weekly</option>
+                        <option>Monthly</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Backup Location</label>
+                    <input type="text" class="form-control" value="/backups/smartedu">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Retention Period (days)</label>
+                    <input type="number" class="form-control" value="30">
+                </div>
+                <button class="btn btn-primary" onclick="initiateBackup()">
+                    <i class="fas fa-download me-2"></i>Initiate Backup Now
+                </button>
+            `;
+            break;
+        case 'security':
+            content.innerHTML = `
+                <h6>Security Settings</h6>
+                <div class="mb-3">
+                    <label class="form-label">Session Timeout (minutes)</label>
+                    <input type="number" class="form-control" value="30">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password Policy</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="minLength" checked>
+                        <label class="form-check-label" for="minLength">
+                            Minimum 8 characters
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="specialChars" checked>
+                        <label class="form-check-label" for="specialChars">
+                            Require special characters
+                        </label>
+                    </div>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="twoFactorAuth">
+                    <label class="form-check-label" for="twoFactorAuth">
+                        Enable Two-Factor Authentication
+                    </label>
+                </div>
+            `;
+            break;
+        case 'maintenance':
+            content.innerHTML = `
+                <h6>Maintenance Mode</h6>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Enabling maintenance mode will restrict access to administrators only.
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="enableMaintenance">
+                    <label class="form-check-label" for="enableMaintenance">
+                        Enable Maintenance Mode
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Maintenance Message</label>
+                    <textarea class="form-control" rows="3">System is currently under maintenance. Please try again later.</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Estimated Duration</label>
+                    <input type="text" class="form-control" placeholder="e.g., 2 hours">
+                </div>
+            `;
+            break;
+    }
+    
+    modal.show();
+}
+
+function saveSettings() {
+    alert('Settings saved successfully!');
+    bootstrap.Modal.getInstance(document.getElementById('settingsModal')).hide();
+}
+
+function initiateBackup() {
+    alert('Backup process initiated. You will be notified upon completion.');
+}
+
+// Load admin data
+function loadAdminData() {
+    // This would fetch data from the API
+    console.log('Loading admin dashboard data...');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    loadAdminData();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - SmartEdu AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="fas fa-user-graduate me-2"></i>Student Dashboard</h2>
+        <p class="text-muted">Welcome back! Here's your academic performance overview.</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0" id="attendanceRate">85%</h4>
+                        <small>Attendance Rate</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-calendar-check fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0" id="currentGPA">3.2</h4>
+                        <small>Current GPA</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-award fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0" id="riskLevel">Low</h4>
+                        <small>Risk Level</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0" id="prediction">3.5</h4>
+                        <small>Predicted GPA</small>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Performance Trends</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="performanceChart" height="100"></canvas>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-book me-2"></i>Subject Performance</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="subjectChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Recommendations</h5>
+            </div>
+            <div class="card-body">
+                <div id="recommendations">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Focus Area:</strong> Mathematics - Additional practice recommended
+                    </div>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Strength:</strong> English - Keep up the good work!
+                    </div>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-clock me-2"></i>
+                        <strong>Time Management:</strong> Consider study schedule optimization
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Recent Attendance</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Mathematics</span>
+                        <span class="badge bg-success">Present</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Physics</span>
+                        <span class="badge bg-success">Present</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Chemistry</span>
+                        <span class="badge bg-warning">Late</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>English</span>
+                        <span class="badge bg-success">Present</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Computer Science</span>
+                        <span class="badge bg-danger">Absent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Performance Chart
+const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+const performanceChart = new Chart(performanceCtx, {
+    type: 'line',
+    data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+        datasets: [{
+            label: 'GPA Trend',
+            data: [2.8, 3.0, 2.9, 3.1, 3.2, 3.2],
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.1
+        }, {
+            label: 'Predicted',
+            data: [null, null, null, null, null, 3.5],
+            borderColor: 'rgb(255, 99, 132)',
+            borderDash: [5, 5],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: false,
+                min: 2.0,
+                max: 4.0
+            }
+        }
+    }
+});
+
+// Subject Performance Chart
+const subjectCtx = document.getElementById('subjectChart').getContext('2d');
+const subjectChart = new Chart(subjectCtx, {
+    type: 'radar',
+    data: {
+        labels: ['Mathematics', 'Physics', 'Chemistry', 'English', 'Computer Science'],
+        datasets: [{
+            label: 'Current Performance',
+            data: [65, 78, 82, 90, 75],
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        }, {
+            label: 'Class Average',
+            data: [75, 75, 75, 75, 75],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            borderDash: [5, 5]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            r: {
+                beginAtZero: true,
+                max: 100
+            }
+        }
+    }
+});
+
+// Load student data
+function loadStudentData() {
+    // This would fetch data from the API
+    console.log('Loading student data...');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    loadStudentData();
+});
+</script>
+{% endblock %}
